@@ -1,4 +1,5 @@
 import {Field, Form, Formik} from "formik";
+import React from "react";
 import {useState} from "react";
 
 interface Props {
@@ -43,7 +44,7 @@ const SignIn = ({onSignIn, title, onScreenChange, helpText, error}: Props) => {
       >
         <Form className='flex flex-col justify-start gap-y-6'>
           <label className='block'>
-            <span className="text-slate-700 dark:text-slate-400">Email</span>
+            <span className="text-slate-700 dark:text-slate-700">Email</span>
             <Field
               name="email"
               placeholder="jane@acme.com"
@@ -52,7 +53,7 @@ const SignIn = ({onSignIn, title, onScreenChange, helpText, error}: Props) => {
             />
           </label>
           <label className='block'>
-            <span className="text-slate-700 dark:text-slate-400">Password</span>
+            <span className="text-slate-700 dark:text-slate-700">Password</span>
             <Field
               name="password"
               type="password"

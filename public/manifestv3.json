@@ -1,7 +1,7 @@
 {
-  "name": "Cat Facts",
-  "description": "Learn random facts about cats",
-  "version": "1.0.0",
+  "name": "Chat Conductor",
+  "description": "Conduct your ChatGPT conversation",
+  "version": "0.0.1",
   "manifest_version": 3,
   "action": {
     "default_popup": "index.html",
@@ -10,7 +10,7 @@
   "content_scripts": [
     {
       "matches": [
-        "https://blank.org/*"
+        "https://chat.openai.com/*"
       ],
       "run_at": "document_end",
       "js": [
