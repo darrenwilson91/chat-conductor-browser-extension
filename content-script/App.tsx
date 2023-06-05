@@ -13,21 +13,39 @@ const App = () => {
   const [session, setSession] = useState(null);
   const [screen, setScreen] = useState(SCREEN.FACTS);
   const [error, setError] = useState('');
+  const [accessToken, setAccessToken] = useState("")
+  const [refreshToken, setRefreshToken] = useState("")
 
   async function getSession() {
+    console.log("getSession run from App.tsx")
     const {data: {session}} = await browser.runtime.sendMessage({action: 'getSession'});
     setSession(session);
+    console.log(session)
+  }
+
+  async function getAccessToken() {
+    const {data, error} = await browser.runtime.sendMessage({action: 'getAccessToken'});
+    console.log("fetched access token:")
+    console.log(data)
+    //console.log(accessToken)
+    setAccessToken(data.restoredAccessToken)
+    setRefreshToken(data.restoredRefreshToken)
   }
 
   useEffect(() => {
     getSession();
+    getAccessToken();
   }, []);
 
   async function handleOnClick() {
     setLoading(true);
-    const {data} = await browser.runtime.sendMessage({action: 'completion', value: {humanPrompt: 'Build a Pong game'}});
-    setFact(data);
-    setLoading(false);
+    const textArea = document.querySelector('textarea');
+    const textValue = textArea ? textArea.value : '';
+    if(textValue) { 
+      const {data} = await browser.runtime.sendMessage({action: 'completion', value: {humanPrompt: textValue}});
+      setFact(data);
+      setLoading(false);
+    }
   }
 
   async function handleSignUp(email: string, password: string) {
@@ -49,7 +67,9 @@ const App = () => {
   }
 
   function renderApp() {
-    if (!session) {
+    console.log("rendering app-----")
+    console.log(accessToken)
+    if (!session && !accessToken) {
       if (screen === SCREEN.SIGN_UP) {
         return <SignIn onSignIn={handleSignUp} title={'Sign Up'} onScreenChange={() => {
           setScreen(SCREEN.SIGN_IN);
